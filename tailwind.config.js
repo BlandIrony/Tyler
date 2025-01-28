@@ -17,8 +17,7 @@ export default {
       fontFamily: {
         'archivo-r': ['"Archivo Regular"', 'sans-serif'],
         'archivo-m': ['"Archivo Medium"', 'sans-serif'],
-        'panchang-b': ['"Panchang Bold"', 'sans-serif'],
-        'panchang-eb': ['"Panchang Extrabold"', 'sans-serif'],
+        'bebas': ['"BebasNeue Regular"', 'sans-serif'],
       },
     },
   },

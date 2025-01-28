@@ -3,7 +3,7 @@ import { preloadImages } from "./scripts/utils.js";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { PreLoaderItem } from "./scripts/preloader-item.js";
+import { TextItem } from "./scripts/hero-text.js";
 import "splitting/dist/splitting.css";
 import "splitting/dist/splitting-cells.css";
 import Splitting from "splitting";
@@ -11,10 +11,9 @@ import Splitting from "splitting";
 gsap.registerPlugin(ScrollTrigger);
 
 // Declarations
-const preloader__crown = document.querySelector('[data-item="crown"]')
-const preloader__stick = document.querySelector('[data-item="stick"]')
-const preloader__counter = document.querySelector('[data-item="counter"]')
-const preloader__counter__container = document.querySelector('[data-item="counter__container"]')
+const left__pane = document.querySelector('[data-item="left-pane"]')
+const right__pane = document.querySelector('[data-item="right-pane"]')
+
 
 // Initialize a new Lenis instance for smooth scrolling
 const lenis = new Lenis();
@@ -31,47 +30,43 @@ gsap.ticker.add((time) => {
 // Disable lag smoothing in GSAP to prevent any delay in scroll animations
 gsap.ticker.lagSmoothing(0);
 
+// Store all text instance
+const items = [];
+
+[...document.querySelectorAll('[data-item="wrapper__el"]')].forEach(item => {
+  items.push(new TextItem(item))
+})
+
 export default class Home {
   constructor() {
-    this.preloader__anim()
+    this.home__anim()
   }
 
-  preloader__anim () {
+  home__anim () {
     const tl = gsap.timeline()
 
-    tl.addLabel('start', 0)
-    .to(preloader__crown, {
-      y: 158,
-      duration: 1.5,
-      ease: 'power2.inOut',
-    }, '<')
-    .to(preloader__stick, {
-      y: -140,
-      duration: 1.5,
-      ease: 'power2.inOut',
-    }, '+=start')
-    .to(preloader__counter, {
-      y: -155,
-      duration: 1.5,
-      ease: 'sine.inOut',
-    }, '+=start') // Start end animation
-    .to(preloader__crown, {
-      y: 0,
-      duration: 1.25,
-      ease: 'sine.inOut'
-    }, 'start+=4')
-    // .set(preloader__counter__container, { overflow: 'hidden' })
-    .to(preloader__counter, {
-      yPercent: 20,
-      opacity: 0,
-      duration: .25,
-      ease: 'sine.inOut'
-    }, '<')
-    .to(preloader__stick, {
-      y: 0,
-      duration: 1.25,
-      ease: 'sine.inOut'
-    }, '<')
+    tl.fromTo(
+      left__pane, {
+        width: 0
+      }, {
+        width: '60%',
+        duration: 2,
+        ease: 'power4.inOut'
+      }
+    )
+    .fromTo(
+      right__pane,
+      {
+        width: 0,
+      }, {
+        width: '40%',
+        duration: 2,
+        ease: 'power3.inOut'
+      }
+    )
+    
+    // gsap.utils.toArray(items.overlay)
+    
   }
 }
 
