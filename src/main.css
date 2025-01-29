@@ -54,6 +54,7 @@ body {
   font-family: "Archivo Regular", sans-serif;
   background-color: var(--color-white);
   color: var(--color-black);
+  overflow: hidden;
 }
 
 html.lenis,

@@ -4,15 +4,14 @@ import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { TextItem } from "./scripts/hero-text.js";
-import "splitting/dist/splitting.css";
-import "splitting/dist/splitting-cells.css";
-import Splitting from "splitting";
 
 gsap.registerPlugin(ScrollTrigger);
 
 // Declarations
 const left__pane = document.querySelector('[data-item="left-pane"]')
 const right__pane = document.querySelector('[data-item="right-pane"]')
+const thumbnail = document.querySelector('[data-item="thumbnail"]')
+const cta = document.querySelectorAll('[data-item="cta"]')
 
 
 // Initialize a new Lenis instance for smooth scrolling
@@ -31,11 +30,11 @@ gsap.ticker.add((time) => {
 gsap.ticker.lagSmoothing(0);
 
 // Store all text instance
-const items = [];
+// const items = [];
 
-[...document.querySelectorAll('[data-item="wrapper__el"]')].forEach(item => {
-  items.push(new TextItem(item))
-})
+// [...document.querySelectorAll('[data-item="wrapper__el"]')].forEach(item => {
+//   items.push(new TextItem(item))
+// })
 
 export default class Home {
   constructor() {
@@ -45,14 +44,16 @@ export default class Home {
   home__anim () {
     const tl = gsap.timeline()
 
-    tl.fromTo(
+    tl
+    .addLabel('start', 0)
+    .fromTo(
       left__pane, {
         width: 0
       }, {
-        width: '60%',
+        width: '100%',
         duration: 2,
         ease: 'power4.inOut'
-      }
+      }, 'start'
     )
     .fromTo(
       right__pane,
@@ -60,12 +61,79 @@ export default class Home {
         width: 0,
       }, {
         width: '40%',
-        duration: 2,
+        duration: 1.75,
         ease: 'power3.inOut'
-      }
+      }, 'start+=.25'
     )
     
-    // gsap.utils.toArray(items.overlay)
+    gsap.utils.toArray('[data-item="text__overlay"]').forEach((el, i) => {
+      tl.to(
+        el, 
+        {
+          x: '100%',
+          duration: 1.25,
+          delay: i * 0.045,
+          ease: 'power4.out',
+        }, "start+=.95"
+      )
+    })
+
+    gsap.utils.toArray('[data-item="text__el"]').forEach((el, i) => {
+      tl.to(
+        el, 
+        {
+          x: 0,
+          duration: 1.25,
+          delay: i * 0.045,
+          ease: 'power4.out',
+        }, "start+=.95"
+      )
+    })
+
+    tl.to(thumbnail,
+      { width: '100%', duration: 1.35, ease: 'power4.out' },
+      'start+=.95'
+    )
+
+    gsap.utils.toArray('[data-item="title__translate"]').forEach((el) => {
+      tl.to(
+        el, 
+        {
+          y: 0,
+          duration: 1.25,
+          ease: 'power3.inOut',
+        }, "start+=1.15"
+      )
+    })
+
+    gsap.utils.toArray('[data-item="sub__translate"]').forEach((el) => {
+      tl.to(
+        el, 
+        {
+          y: 0,
+          duration: 1.25,
+          ease: 'power3.inOut',
+        }, "start+=1.5"
+      )
+    })
+
+    tl.to(
+      cta,
+      {
+        opacity: 1,
+        y: 0,
+        duration: .75,
+        ease: 'power1.inOut'
+      }, 'start+=1'
+    )
+    .to(
+      '[data-item="footer"]',
+      {
+        y: 0,
+        opacity: 1,
+        duration: .75
+      }
+    )
     
   }
 }
